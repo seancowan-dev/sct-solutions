@@ -1,0 +1,9 @@
+@import url('../../css/base-theme/vars.css');
+
+.folder-container {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    border-left: var(--border-style-medium);
+    border-top: var(--border-style-small);
+}

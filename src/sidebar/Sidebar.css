@@ -1,0 +1,8 @@
+@import url('../css/base-theme/vars.css');
+
+.folders-list {
+    border-bottom: var(--border-style-small);
+    padding-top: 20px;
+    border-top: var(--border-style-small);
+    border-left: var(--border-style-small);
+}

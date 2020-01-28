@@ -1,0 +1,6 @@
+/* Base Theme */
+
+:root { 
+    --border-style-small: 1px solid #424242;
+    --border-style-medium: 2px solid #424242;
+}

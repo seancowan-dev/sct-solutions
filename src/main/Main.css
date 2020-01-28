@@ -1,0 +1,5 @@
+@import url('../css/base-theme/vars.css');
+
+.main-content {
+    border: var(--border-style-small);
+}
