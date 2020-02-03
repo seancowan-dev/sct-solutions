@@ -1,8 +1,8 @@
 import React from 'react';
 import Note from './notes/note/Note';
 
-export default function displayNote(props, store) {
-    const folderNotes = store.notes.filter(note => {if (note.folderId === props.match.params.folderId) {
+export default function displayFolder(props, notes) {
+    const folderNotes = notes.filter(note => {if (note.folderId === props.match.params.folderId) {
         return note;
     }});
     const noteMap = folderNotes.map(note => {
