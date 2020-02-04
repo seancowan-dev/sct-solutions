@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { SiteConsumer } from '../Context';
+import Button from '../../comps/Button/Button';
+import AddNote from '../../comps/AddNote/AddNote';
 import Note from './note/Note';
 import './Notes.css';
 
@@ -24,7 +26,18 @@ class Notes extends Component {
                             );
                         });
                     return <section className="notes-section">
+
                         {notes}
+                        <br />
+
+                    <Button 
+                        key={Math.random(4*10/2)} 
+                        className="add-note-button" 
+                        itemName="add-note" 
+                        textValue="Add Note"                 
+                        onClick={(e) => { 
+                            this.props.history.push("/addNote");
+                    }}/>
                     </section>
                     }
                 }}
@@ -34,4 +47,4 @@ class Notes extends Component {
     };
 };
 
-export default Notes;
+export default withRouter(Notes);

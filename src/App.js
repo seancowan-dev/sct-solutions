@@ -79,6 +79,16 @@ class App extends Component {
 
   }
 
+  addNote(event) {
+    event.preventDefault();
+    console.log("hi I worked");
+  }
+
+  addFolder(event) {
+    event.preventDefault();
+    console.log("hi I worked");
+  }
+
   constructor(props) {
     super(props);
 
@@ -86,6 +96,8 @@ class App extends Component {
       displayNote: displayNote,
       displayFolder: displayFolder,
       deleteNote: this.deleteNote.bind(this),
+      addNote: this.addNote,
+      addFolder: this.addFolder,
       done: false
     };
   };

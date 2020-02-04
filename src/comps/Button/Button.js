@@ -5,7 +5,7 @@ import './Button.css';
 class Button extends Component {
     render() {
         return(
-            <input type="button" name={this.props.itemName} className={this.props.className} value={this.props.textValue}/>
+            <input type="button" name={this.props.itemName} className={this.props.className} value={this.props.textValue} onClick={this.props.onClick}/>
         );
     };
 };

@@ -21,3 +21,15 @@
     margin-top: 20px;
     display: block;
 }
+
+.add-note-button {
+    background-color: white;
+    border: var(--border-style-medium);
+    width: 20%;
+    height: 40px;
+    margin-left: auto;
+    margin-right: 20%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}

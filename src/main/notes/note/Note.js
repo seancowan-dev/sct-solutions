@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SiteContext from '../../Context';
 import moment from 'moment';
-import ErrorHandler from '../../../comps/MakeInput/comps/ErrorHandler';
-import MakeInput from '../../../comps/MakeInput/MakeInput';
 import './Note.css';
 
 class Note extends Component {

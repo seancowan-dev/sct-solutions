@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+import SiteContext from '../main/Context';
 import Store from '../Store';
 import Folder from './Folder/Folder';
 import Button from '../comps/Button/Button';
 import './Sidebar.css';
 
 class Sidebar extends Component {
+    static contextType = SiteContext
     render() {
         const folders = Store.folders.map((folder) => {
             return <NavLink key={folder.id} to={"/folder/" + folder.id}>
@@ -26,10 +28,13 @@ class Sidebar extends Component {
                 className="add-folder-button"
                 itemName="add-folder"
                 textValue="Add Folder"
+                onClick={(e) => { 
+                    this.props.history.push("/addFolder");
+                }}
                 />
             </aside>
         );
     };
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);

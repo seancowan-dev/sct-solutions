@@ -1,5 +1,7 @@
 import React, { Component, useContext } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import AddNote from '../comps/AddNote/AddNote';
+import AddFolder from '../comps/AddFolder/AddFolder';
 import SiteContext from '../main/Context';
 import Notes from './notes/Notes';
 import './Main.css';
@@ -23,6 +25,16 @@ class Main extends Component {
                         return this.context.displayFolder(props, this.context.notes);
                     }
                 }} />
+                <Route path='/addNote' render={(props) => {
+                    if (this.context.done === true) {
+                        return <AddNote localProps={props}/>
+                    }
+                }}/>
+                <Route path='/addFolder' render={(props) => {
+                    if (this.context.done === true) {
+                        return <AddFolder localProps={props}/>
+                    }
+                }}/>
             </Switch>
             </main>
         );
