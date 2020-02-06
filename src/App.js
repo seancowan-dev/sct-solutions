@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import { SiteProvider } from './main/Context';
+import ErrorBound from './comps/ErrorBound';
 import displayNote from './main/displayNote';
 import displayFolder from './main/displayFolder';
 import Header from './header/Header';
@@ -9,6 +9,31 @@ import Main from './main/Main';
 import './App.css';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      displayNote: displayNote,
+      displayFolder: displayFolder,
+      deleteNote: this.deleteNote.bind(this),
+      addNote: this.addNote.bind(this),
+      addFolder: this.addFolder.bind(this),
+      getNotes: this.getNotes.bind(this),
+      getFolders: this.getFolders.bind(this),
+      done: false
+    };
+  };
+
+  componentDidMount() {
+    this.promises().then(res => {
+      this.setState({
+        folders: res[0],
+        notes: res[1],
+      });
+    });
+  };
+
     handleErrors(response) { // prepares error message for HTTP request errors
       if (response.ok === true) {
           return response.json();
@@ -17,36 +42,36 @@ class App extends Component {
       }
   }
 
+  hex(string) {
+    let source = unescape(encodeURIComponent(string));
+    let hex = '';
+      for (var i = 0; i < source.length; i++) {
+          hex += source.charCodeAt(i).toString(16)
+      };
+      return hex;
+  };
+
   async getFolders() {
-    await fetch(`http://localhost:9090/folders`, {
+    return await fetch(`http://localhost:9090/folders`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
       },
     })
     .then(response => this.handleErrors(response))
-    .then(responseJSON => {
-      this.setState({
-        folders: responseJSON,
-      });
-    })
+    .then(resJSON => { return resJSON })
     .catch(e => alert(e));
   }
 
   async getNotes() {
-    await fetch(`http://localhost:9090/notes`, {
+    return await fetch(`http://localhost:9090/notes`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
       },
     })
     .then(response => this.handleErrors(response))
-    .then(responseJSON => {
-      this.setState({
-        notes: responseJSON,
-        done: true
-      })
-    })
+    .then(resJSON => { return resJSON })
     .catch(e => alert(e));
   }
 
@@ -79,32 +104,79 @@ class App extends Component {
 
   }
 
-  addNote(event) {
+  async addNote(event) {
     event.preventDefault();
-    console.log("hi I worked");
-  }
-
-  addFolder(event) {
-    event.preventDefault();
-    console.log("hi I worked");
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      displayNote: displayNote,
-      displayFolder: displayFolder,
-      deleteNote: this.deleteNote.bind(this),
-      addNote: this.addNote,
-      addFolder: this.addFolder,
-      done: false
+    let workingArr = Array.from(event.target.parentNode.childNodes);
+    let date = new Date(Date.now());
+    let note = {
+      id: "",
+      name: "",
+      modified: date.toISOString(),
+      folderId: "",
+      content: ""
     };
-  };
+    let found = workingArr.filter(child => {
+      if(child.name === "add-note-content") {
+        note.content = child.value;
+      }
+      if (child.name === "add-note-title") {
+        note.name = child.value;
+      }
+      if (child.name === "select-note-folder") {
+        note.folderId = child.selectedOptions[0].id;
+      }
+    });
 
-  componentDidMount() {
-    this.getFolders();
-    this.getNotes();
+    note.id = this.hex(note.name);
+
+    await fetch(`http://localhost:9090/notes/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    })
+    .then(response => {
+      if (response.ok === true) {
+        return response.json();
+    } else {
+        throw new Error("Code " + response.status + " Message: " + response.statusText)
+    }
+    }).catch(e => alert(e));    
+  }
+
+  async addFolder(event) {
+    event.preventDefault();
+    let workingArr = Array.from(event.target.parentNode.childNodes);
+    let folder = {
+      id: "",
+      name: "",
+    };
+    let found = workingArr.filter(child => {
+      if(child.name === "add-folder-title") {
+        folder.name = child.value;
+        folder.id = this.hex(child.value);
+      }
+    });
+
+    await fetch(`http://localhost:9090/folders/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(folder)
+    })
+    .then(response => {
+      if (response.ok === true) {
+        return response.json();
+    } else {
+        throw new Error("Code " + response.status + " Message: " + response.statusText)
+    }
+    }).catch(e => alert(e));
+  }
+
+  promises() {
+    return Promise.all([this.getFolders(), this.getNotes()]);
   }
 
   render() {
@@ -114,10 +186,13 @@ class App extends Component {
       <Header 
         pageTitle="Welcome to Noteful"
       />
-      <Sidebar />
       <SiteProvider value={this.state}>
-        <Main
-          />
+        <ErrorBound>
+            <Sidebar />
+        </ErrorBound>
+        <ErrorBound>
+            <Main/>
+        </ErrorBound>
       </SiteProvider>
     </div>
     );

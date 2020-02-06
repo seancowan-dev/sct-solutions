@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { SiteConsumer } from '../Context';
 import Button from '../../comps/Button/Button';
-import AddNote from '../../comps/AddNote/AddNote';
 import Note from './note/Note';
 import './Notes.css';
 

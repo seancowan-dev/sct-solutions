@@ -11,6 +11,7 @@ export default function displayNote(props, notes) {
             mod={note.modified}
             folderId={note.folderId}
             content={note.content}
+            isRoute="true"
         />
     );
 };

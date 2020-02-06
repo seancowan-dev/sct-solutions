@@ -1,13 +1,14 @@
 import React from 'react';
-import STORE from '../Store';
 
 const SiteContext = React.createContext({
-    store: STORE, //temp b4 api res made
     displayNote: () => {},
     displayFolder: () => {},
     deleteNote: () => {},
     addNote: () => {},
-    addFolder: () => {}
+    addFolder: () => {},
+    getNotes: () => {},
+    getFolders: () => {},
+    done: ""
   });
 
 export const SiteProvider = SiteContext.Provider;

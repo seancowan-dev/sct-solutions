@@ -9,7 +9,6 @@ class Note extends Component {
     
     render() {
         let sampleCss = { "background-color": "brown", };
-
         return(
             <article className="note" id={this.props.id}>
                 <div className="note-info">
@@ -17,6 +16,9 @@ class Note extends Component {
                     <h2>{this.props.name}</h2>
                 </Link>
                     <p>{moment(this.props.mod).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                    <div className="note-content">
+                        <p>{this.props.isRoute ? this.props.content : " " }</p>
+                    </div>
                     <input 
                 type="button"
                 id={this.props.id}
@@ -28,9 +30,6 @@ class Note extends Component {
                     this.props.history.push("/");
                 }}
                 />
-                </div>
-                <div className="note-content">
-                    {/* <p>{this.props.content}</p> */}
                 </div>
             </article>
         );
