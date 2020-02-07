@@ -1,5 +1,6 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import ValidationError from '../comps/validationErr';
 import AddNote from '../comps/AddNote/AddNote';
 import AddFolder from '../comps/AddFolder/AddFolder';
 import SiteContext from '../main/Context';
@@ -10,11 +11,9 @@ class Main extends Component {
     static contextType = SiteContext
     
     render() {
-        let done = this.context.done.toString();
         return (
             
             <main className="main-content">
-            <h1>this is the current value: {done}</h1>
             <Switch>
                 <Route path="/" component={Notes} exact />
                 <Route path='/note/:noteId' render={(props) => {
@@ -24,7 +23,7 @@ class Main extends Component {
                 }} />
                 <Route path='/folder/:folderId' render={(props) => {
                     if (this.context.done === true) {
-                        return this.context.displayFolder(props, this.context.notes);
+                        return this.context.displayFolder(props, this.context.notes, this.props.history);
                     }
                 }} />
                 <Route path='/addNote' render={(props) => {
@@ -43,4 +42,4 @@ class Main extends Component {
     };
 };
 
-export default Main;
+export default withRouter(Main);

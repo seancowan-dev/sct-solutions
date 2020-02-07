@@ -8,6 +8,7 @@ const SiteContext = React.createContext({
     addFolder: () => {},
     getNotes: () => {},
     getFolders: () => {},
+    promises: () => {},
     done: ""
   });
 

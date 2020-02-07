@@ -21,6 +21,7 @@ class App extends Component {
       addFolder: this.addFolder.bind(this),
       getNotes: this.getNotes.bind(this),
       getFolders: this.getFolders.bind(this),
+      promises: this.promises.bind(this),
       done: false
     };
   };
@@ -30,6 +31,7 @@ class App extends Component {
       this.setState({
         folders: res[0],
         notes: res[1],
+        done: true
       });
     });
   };
@@ -94,6 +96,7 @@ class App extends Component {
         if (note.id !== id) {
           return note;
         }
+        return null
       });
 
       this.setState({
@@ -115,7 +118,7 @@ class App extends Component {
       folderId: "",
       content: ""
     };
-    let found = workingArr.filter(child => {
+    workingArr.filter(child => {
       if(child.name === "add-note-content") {
         note.content = child.value;
       }
@@ -125,6 +128,7 @@ class App extends Component {
       if (child.name === "select-note-folder") {
         note.folderId = child.selectedOptions[0].id;
       }
+      return null
     });
 
     note.id = this.hex(note.name);
@@ -138,6 +142,11 @@ class App extends Component {
     })
     .then(response => {
       if (response.ok === true) {
+        this.promises().then(res => {
+          this.setState({
+            notes: res[1],
+          });
+        });
         return response.json();
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
@@ -152,11 +161,12 @@ class App extends Component {
       id: "",
       name: "",
     };
-    let found = workingArr.filter(child => {
+    workingArr.filter(child => {
       if(child.name === "add-folder-title") {
         folder.name = child.value;
         folder.id = this.hex(child.value);
       }
+      return null
     });
 
     await fetch(`http://localhost:9090/folders/`, {
@@ -168,6 +178,11 @@ class App extends Component {
     })
     .then(response => {
       if (response.ok === true) {
+        this.promises().then(res => {
+          this.setState({
+            folders: res[0],
+          });
+        });
         return response.json();
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)

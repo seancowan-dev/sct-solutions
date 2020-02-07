@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SiteContext from '../../Context';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import './Note.css';
 
@@ -8,7 +9,6 @@ class Note extends Component {
     static contextType = SiteContext
     
     render() {
-        let sampleCss = { "background-color": "brown", };
         return(
             <article className="note" id={this.props.id}>
                 <div className="note-info">
@@ -31,9 +31,19 @@ class Note extends Component {
                 }}
                 />
                 </div>
+                
             </article>
         );
     };
 };
+
+Note.propTypes = {
+    key: PropTypes.number,
+    id: PropTypes.string, 
+    name: PropTypes.string,
+    mod: PropTypes.string,
+    folderId: PropTypes.string,
+    content: PropTypes.string
+}
 
 export default withRouter(Note);

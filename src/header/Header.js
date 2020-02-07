@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Header.css';
 
 class Header extends Component {
+    
     render() {
         return(
             <header>
@@ -11,8 +12,14 @@ class Header extends Component {
                 <h1>{this.props.pageTitle}</h1>
                 </Link>
             </header>
-            );        
+        );  
     };
+
+
 };
+
+Header.propTypes = {
+    pageTitle: PropTypes.string            
+}  
 
 export default Header;

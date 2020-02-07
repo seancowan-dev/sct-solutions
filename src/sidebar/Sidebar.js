@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import SiteContext from '../main/Context';
-import Store from '../Store';
 import Folder from './Folder/Folder';
 import Button from '../comps/Button/Button';
 import './Sidebar.css';
@@ -12,7 +11,7 @@ class Sidebar extends Component {
 
     render() {
         let folders;
-        if (this.context.async === true) {
+        if (this.context.done === true) {
             folders = this.context.folders.map((folder) => {
                 return <NavLink key={folder.id} to={"/folder/" + folder.id}>
                     <Folder

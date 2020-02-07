@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Button.css';
 
 class Button extends Component {
@@ -9,5 +9,12 @@ class Button extends Component {
         );
     };
 };
+
+Button.propTypes = {
+    className: PropTypes.string,
+    itemName: PropTypes.string,
+    textValue: PropTypes.string,
+    onClick: PropTypes.func,
+}
 
 export default Button;
