@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SiteContext from '../../Context';
+import Update from '../../update/Update';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import './Note.css';
@@ -9,7 +10,7 @@ class Note extends Component {
     static contextType = SiteContext
     
     render() {
-        return(
+        return(<>
             <article className="note" id={this.props.id}>
                 <div className="note-info">
                 <Link to={`/note/${this.props.id}`}>
@@ -19,20 +20,30 @@ class Note extends Component {
                     <div className="note-content">
                         <p>{this.props.isRoute ? this.props.content : " " }</p>
                     </div>
-                    <input 
-                type="button"
-                id={this.props.id}
-                name={"delete-note"}
-                className={"delete-note-button"}
-                value={"Delete"}
-                onClick={() => { 
-                    this.context.deleteNote(this.props.id);
-                    this.props.history.push("/");
-                }}
+                <input 
+                    type="button"
+                    id={this.props.id}
+                    name={"delete-note"}
+                    className={"delete-note-button"}
+                    value={"Delete"}
+                    onClick={() => { 
+                        this.context.deleteNote(this.props.id);
+                        this.props.history.push("/");
+                    }}
+                />
+                <input 
+                    type="button"
+                    name={"update-note"}
+                    className={"update-note-button"}
+                    value={"Update"}
+                    onClick={() => { 
+                        this.props.history.push("/updateNote/" + this.props.id)
+                    }}
                 />
                 </div>
                 
             </article>
+        </>
         );
     };
 };

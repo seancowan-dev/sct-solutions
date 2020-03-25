@@ -28,7 +28,7 @@ class AddNote extends Component {
     render() {
         let opts = [];
         for (let i = 0; i < this.context.folders.length; i++) {
-            opts.push(<option value={this.context.folders[i].name} id={this.context.folders[i].id} key={Math.random(40)}>{this.context.folders[i].name}</option>);
+            opts.push(<option value={this.context.folders[i].name} id={this.context.folders[i].folder_id} key={Math.random(40)}>{this.context.folders[i].name}</option>);
         }
         return (<>
         <ValidationError message={this.context.errorMsg} />

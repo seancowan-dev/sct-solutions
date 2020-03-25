@@ -4,6 +4,7 @@ import ValidationError from '../comps/validationErr';
 import AddNote from '../comps/AddNote/AddNote';
 import AddFolder from '../comps/AddFolder/AddFolder';
 import SiteContext from '../main/Context';
+import Update from '../main/update/Update';
 import Notes from './notes/Notes';
 import './Main.css';
 
@@ -36,6 +37,16 @@ class Main extends Component {
                         return <AddFolder localProps={props}/>
                     }
                 }}/>
+                <Route path='/deleteFolder/:folderId' render={(props) => {
+                    this.context.deleteFolder(props.match.params.folderId);
+                    this.props.history.push("/");
+                }}/>
+                <Route path='/updateFolder' render={(props) => {
+                    return <Update localProps={props} updateType="folder"/>
+                }}/>
+                <Route path='/updateNote/:noteid' render={(props) => {
+                    return <Update localProps={props} updateType="note" notes={this.context.notes}/>
+                }}/>                   
             </Switch>
             </main>
         );

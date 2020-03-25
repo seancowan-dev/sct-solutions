@@ -13,10 +13,10 @@ class Sidebar extends Component {
         let folders;
         if (this.context.done === true) {
             folders = this.context.folders.map((folder) => {
-                return <NavLink key={folder.id} to={"/folder/" + folder.id}>
+                return <NavLink key={folder.folder_id} to={"/folder/" + folder.folder_id}>
                     <Folder
                     name={folder.name}
-                    id={folder.id}
+                    id={folder.folder_id}
                     key={Math.random(5)}
                 />
                 </NavLink>
@@ -34,6 +34,14 @@ class Sidebar extends Component {
                 textValue="Add Folder"
                 onClick={(e) => { 
                     this.props.history.push("/addFolder");
+                }}
+                />
+                <Button 
+                className="update-folder-button"
+                itemName="update-folder"
+                textValue="Update Folder"
+                onClick={(e) => { 
+                    this.props.history.push("/updateFolder");
                 }}
                 />
             </aside>

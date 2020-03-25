@@ -1,0 +1,25 @@
+
+.select-folder-form-control {
+    width: 100%;
+}
+
+.update-folder-info-text {
+    width: 50%;
+}
+
+.migrate-notes-checkbox-form-control {
+    width: 50%;
+    align-items: flex-end;
+}
+
+.migrate-notes-checkbox-form-control-label {
+    width: 25%;
+}
+
+.update-note-modified-content-form-control {
+    width: 50%;
+}
+
+.update-note-name-id-form-control {
+    width: 25%;
+}   

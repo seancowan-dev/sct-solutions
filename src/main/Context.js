@@ -3,12 +3,19 @@ import React from 'react';
 const SiteContext = React.createContext({
     displayNote: () => {},
     displayFolder: () => {},
+    updateNote: () => {},
+    updateFolder: () => {},
     deleteNote: () => {},
+    deleteFolder: () => {},
     addNote: () => {},
     addFolder: () => {},
     getNotes: () => {},
     getFolders: () => {},
     promises: () => {},
+    updateType: "",
+    updateFolderId: "",
+    updateNoteId: "",
+    currentNote: null,
     done: ""
   });
 

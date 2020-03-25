@@ -1,10 +1,9 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useContext } from 'react';
 import Button from '../comps/Button/Button';
 import Note from './notes/note/Note';
 
 export default function displayFolder(props, notes, history) {
-    const folderNotes = notes.filter(note => {if (note.folderId === props.match.params.folderId) {
+    const folderNotes = notes.filter(note => {if (note.folderid === props.match.params.folderId) {
         return note;
     }return null});
     const noteMap = folderNotes.map(note => {
@@ -14,21 +13,31 @@ export default function displayFolder(props, notes, history) {
             id={note.id}
             name={note.name}
             mod={note.modified}
-            folderId={note.folderId}
+            folderId={note.folderid}
             content={note.content}
         />);
     });
-    return (<section className="folder-section">
-        {noteMap}
-        <br />
-        <Button 
-            key={Math.random(4*10/2)} 
-            className="add-note-button" 
-            itemName="add-note" 
-            textValue="Add Note"                 
-            onClick={(e) => { 
-                history.push("/addNote");
-            }
-        }/>  
-    </section>);
+    return (
+        <section className="folder-section" id={props.match.params.folderId}>
+            {noteMap}
+            <br />
+            <Button 
+                key={Math.random(4*10/2)} 
+                className="add-note-button" 
+                itemName="add-note" 
+                textValue="Add Note"                 
+                onClick={(e) => { 
+                    history.push("/addNote");
+                }
+            }/>
+            <Button 
+                    className="delete-folder-button"
+                    itemName="delete-folder"
+                    textValue="Delete Folder"
+                    onClick={(e) => {
+                        history.push(`/deleteFolder/${props.match.params.folderId}`);
+                    }}
+            />  
+        </section>
+    );
 };
