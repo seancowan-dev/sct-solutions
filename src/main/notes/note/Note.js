@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import SiteContext from '../../Context';
-import Update from '../../update/Update';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import './Note.css';
+import { observer, inject } from 'mobx-react';
+@inject('valueStore')
+@observer
 
 class Note extends Component {
-    static contextType = SiteContext
     
     render() {
         return(<>
@@ -27,7 +27,7 @@ class Note extends Component {
                     className={"delete-note-button"}
                     value={"Delete"}
                     onClick={() => { 
-                        this.context.deleteNote(this.props.id);
+                        this.props.valueStore.deleteNote(this.props.id);
                         this.props.history.push("/");
                     }}
                 />

@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { SiteConsumer } from '../Context';
 import Button from '../../comps/Button/Button';
 import Note from './note/Note';
 import './Notes.css';
+import { observer, inject } from 'mobx-react';
+@inject('valueStore')
+@observer
 
 class Notes extends Component {
 
     render() {
+
         return(
-            <SiteConsumer>
-                {props => {
-                    if (props.done === true) {
-                        const notes = props.notes.map((note) => {
-                            return (
-                                <Note
-                                    key={note.id} 
-                                    id={note.id}
-                                    name={note.name}
-                                    mod={note.modified}
-                                    folderId={note.folderId}
-                                    content={note.content}
-                                />
-                            );
-                        });
+            <>
+            {(() => {
+                if (this.props.valueStore.done === true) {
+                    const notes = this.props.valueStore.notes.slice();
+                    const noteObjects = notes.map((note) => {
+                        return (
+                            <Note
+                                key={note.id} 
+                                id={note.id}
+                                name={note.name}
+                                mod={note.modified}
+                                folderId={note.folderId}
+                                content={note.content}
+                            />
+                        );
+                    });
                     return <section className="notes-section">
 
-                        {notes}
+                        {noteObjects}
                         <br />
 
                     <Button 
@@ -38,10 +42,9 @@ class Notes extends Component {
                             this.props.history.push("/addNote");
                     }}/>
                     </section>
-                    }
-                }}
-            </SiteConsumer>
-
+                }
+            })()}
+            </>
         );
     };
 };

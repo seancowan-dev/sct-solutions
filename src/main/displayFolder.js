@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Button from '../comps/Button/Button';
 import Note from './notes/note/Note';
 
-export default function displayFolder(props, notes, history) {
+export default function displayFolder(props, notes) {
     const folderNotes = notes.filter(note => {if (note.folderid === props.match.params.folderId) {
         return note;
     }return null});
@@ -27,7 +27,7 @@ export default function displayFolder(props, notes, history) {
                 itemName="add-note" 
                 textValue="Add Note"                 
                 onClick={(e) => { 
-                    history.push("/addNote");
+                    props.history.push("/addNote");
                 }
             }/>
             <Button 
@@ -35,7 +35,7 @@ export default function displayFolder(props, notes, history) {
                     itemName="delete-folder"
                     textValue="Delete Folder"
                     onClick={(e) => {
-                        history.push(`/deleteFolder/${props.match.params.folderId}`);
+                        props.history.push(`/deleteFolder/${props.match.params.folderId}`);
                     }}
             />  
         </section>

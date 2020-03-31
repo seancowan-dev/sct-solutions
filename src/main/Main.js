@@ -1,51 +1,65 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import ValidationError from '../comps/validationErr';
 import AddNote from '../comps/AddNote/AddNote';
 import AddFolder from '../comps/AddFolder/AddFolder';
-import SiteContext from '../main/Context';
 import Update from '../main/update/Update';
 import Notes from './notes/Notes';
 import './Main.css';
+import displayNote from './displayNote';
+import displayFolder from './displayFolder';
+import { observer, inject } from 'mobx-react';
+@inject('valueStore')
+@observer
+
 
 class Main extends Component {
-    static contextType = SiteContext
-    
+
+    componentWillMount() {
+        this.props.valueStore.done = false;
+    }
+
+    componentDidMount() {
+        this.props.valueStore.promises();
+    }
+
     render() {
         return (
             
             <main className="main-content">
             <Switch>
                 <Route path="/" component={Notes} exact />
-                <Route path='/note/:noteId' render={(props) => {
-                    if (this.context.done === true) {
-                        return this.context.displayNote(props, this.context.notes);                        
-                    }
+                <Route path='/note/:noteId' render={(props) => {  
+                    if (this.props.valueStore.done === true) {
+                        return displayNote(props, this.props.valueStore.notes);
+                    }        
                 }} />
                 <Route path='/folder/:folderId' render={(props) => {
-                    if (this.context.done === true) {
-                        return this.context.displayFolder(props, this.context.notes, this.props.history);
+                    if (this.props.valueStore.done === true) {
+                        return displayFolder(props, this.props.valueStore.notes);
                     }
                 }} />
                 <Route path='/addNote' render={(props) => {
-                    if (this.context.done === true) {
+                    if (this.props.valueStore.done === true) {
                         return <AddNote localProps={props}/>
                     }
                 }}/>
                 <Route path='/addFolder' render={(props) => {
-                    if (this.context.done === true) {
+                    if (this.props.valueStore.done === true) {
                         return <AddFolder localProps={props}/>
                     }
                 }}/>
                 <Route path='/deleteFolder/:folderId' render={(props) => {
-                    this.context.deleteFolder(props.match.params.folderId);
+                    this.props.valueStore.deleteFolder(props.match.params.folderId);
                     this.props.history.push("/");
                 }}/>
-                <Route path='/updateFolder' render={(props) => {
+                <Route path='/updateFolder' exact render={(props) => {
+                    return <Update localProps={props} updateType="folder"/>
+                }}/>
+                <Route path='/updated/:folderName/:folderId' render={(props) => {
                     return <Update localProps={props} updateType="folder"/>
                 }}/>
                 <Route path='/updateNote/:noteid' render={(props) => {
-                    return <Update localProps={props} updateType="note" notes={this.context.notes}/>
+                    return <Update localProps={props} updateType="note" />
                 }}/>                   
             </Switch>
             </main>

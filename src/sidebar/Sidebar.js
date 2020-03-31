@@ -5,14 +5,16 @@ import SiteContext from '../main/Context';
 import Folder from './Folder/Folder';
 import Button from '../comps/Button/Button';
 import './Sidebar.css';
+import { observer, inject } from 'mobx-react';
+@inject('valueStore')
+@observer
 
 class Sidebar extends Component {
-    static contextType = SiteContext
 
     render() {
         let folders;
-        if (this.context.done === true) {
-            folders = this.context.folders.map((folder) => {
+        if (this.props.valueStore.done === true) {
+            folders = this.props.valueStore.folders.map((folder) => {
                 return <NavLink key={folder.folder_id} to={"/folder/" + folder.folder_id}>
                     <Folder
                     name={folder.name}

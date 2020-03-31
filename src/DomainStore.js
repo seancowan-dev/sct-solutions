@@ -1,40 +1,54 @@
-import React, { Component } from 'react';
-// import { SiteProvider } from './main/Context';
-import { observable, computed } from 'mobx';
-import { Provider } from "mobx-react";
+import {observable,action,toJS} from 'mobx';
 import uuid from "uuid";
-import ErrorBound from './comps/ErrorBound';
-import DomainStore from './DomainStore'
-import Header from './header/Header';
-import Sidebar from './sidebar/Sidebar';
-import Main from './main/Main';
-import './App.css';
 
-const store = {
-  valueStore: DomainStore,
-}
+class DomainStore{
+    // App Primary 
+     @observable updateType = "";
+     @observable updateFolderId = "";
+     @observable updateNoteId = "";
+     @observable currentNote = null;
+     @observable done = "";
+     @observable updated = null;
+     @observable errorMsg = "";
+     @observable notes = {};
+     @observable folders = {};
 
-class App extends Component {
-  @observable
+    // Update Component
+     @observable folderNotes = [];
+     @observable selectedFolder = "";
+     @observable selectedFolderId = "";
+     @observable selectedFolderIdOld = "";
+     @observable oldNoteId = null;
+     @observable currentNoteId = null;
+     @observable migrateChecked = false;
+     @observable note = {
+         id: null,
+         name: null,
+         folderid: null,
+         modified: null,
+         content: null
+     };
 
-  handleErrors(response) { // prepares error message for HTTP request errors
+    // Local methods to use with fetch api methods
+     handleErrors(response) { // prepares error message for HTTP request errors
       if (response.ok === true) {
           return response.json();
       } else {
           throw new Error("Code " + response.status + " Message: " + response.statusText)
       }
-  }
+    }
+    hex(string) {
+      let source = unescape(encodeURIComponent(string));
+      let hex = '';
+        for (var i = 0; i < source.length; i++) {
+            hex += source.charCodeAt(i).toString(16)
+        };
+        return hex;
+    }
 
-  hex(string) {
-    let source = unescape(encodeURIComponent(string));
-    let hex = '';
-      for (var i = 0; i < source.length; i++) {
-          hex += source.charCodeAt(i).toString(16)
-      };
-      return hex;
-  };
+  // Fetch API Methods
 
-  async getFolders() {
+  @action async getFolders() {
     return await fetch(`http://localhost:8000/api/folders`, {
       method: 'GET',
       headers: {
@@ -46,7 +60,7 @@ class App extends Component {
     .catch(e => alert(e));
   }
 
-  async getNotes() {
+  @action async getNotes() {
     return await fetch(`http://localhost:8000/api/notes`, {
       method: 'GET',
       headers: {
@@ -58,7 +72,7 @@ class App extends Component {
     .catch(e => alert(e));
   }
 
-  async deleteNote(id) {
+  @action async deleteNote(id) {
     return await fetch(`http://localhost:8000/api/notes/${id}`, {
       method: 'DELETE',
       headers: {
@@ -67,12 +81,7 @@ class App extends Component {
     })
     .then(response => { 
       if (response.ok === true) {
-        this.getNotes().then(res => {
-          this.setState({
-            notes: res,
-          });
-        });
-
+        this.promises();
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
     }
@@ -81,7 +90,7 @@ class App extends Component {
 
   }
 
-  async addNote(event) {
+  @action async addNote(event) {
     event.preventDefault();
     let workingArr = Array.from(event.target.parentNode.childNodes);
     let date = new Date(Date.now());
@@ -113,19 +122,14 @@ class App extends Component {
     })
     .then(response => {
       if (response.ok === true) {
-        this.promises().then(res => {
-          this.setState({
-            notes: res[1],
-          });
-        });
-        return response.json();
+        this.promises()
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
     }
     }).catch(e => alert(e));    
   }
 
-  async addFolder(event) {
+  @action async addFolder(event) {
     event.preventDefault();
     let workingArr = Array.from(event.target.parentNode.childNodes);
     let folder = {
@@ -149,19 +153,14 @@ class App extends Component {
     })
     .then(response => {
       if (response.ok === true) {
-        this.promises().then(res => {
-          this.setState({
-            folders: res[0],
-          });
-        });
-        return response.json();
+        this.promises()
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
     }
     }).catch(e => alert(e));
   }
 
-  async deleteFolder(id) {
+  @action async deleteFolder(id) {
     await fetch(`http://localhost:8000/api/folders/${id}`, {
       method: `DELETE`,
       headers: {
@@ -171,12 +170,7 @@ class App extends Component {
     })
     .then(response => { 
       if (response.ok === true) {
-        this.promises().then(res => {
-          this.setState({
-            folders: res[0],
-          });
-        });
-
+        this.promises()
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
     }
@@ -184,7 +178,7 @@ class App extends Component {
     .catch(e => alert(e));
   }
 
-  async updateFolder(id, updates) {
+  @action async updateFolder(id, updates) {
     await fetch(`http://localhost:8000/api/folders/${id}`, {
       method: `PATCH`,
       headers: {
@@ -194,12 +188,7 @@ class App extends Component {
     })
     .then(response => {
       if (response.ok === true) {
-        this.promises().then(res => {
-          this.setState({
-            folders: res[0],
-          });
-        });
-        
+        this.promises()
     } else {
         throw new Error("Code " + response.status + " Message: " + response.statusText)
     }
@@ -207,7 +196,7 @@ class App extends Component {
     .catch(e => alert(e));
   }
 
-  async updateNote(id, updates) {
+  @action async updateNote(id, updates) {
     await fetch(`http://localhost:8000/api/notes/${id}`, {
       method: `PATCH`,
       headers: {
@@ -216,43 +205,21 @@ class App extends Component {
       body: JSON.stringify(updates),
     })
     .then(response => {
-      if (response.ok === true) {
-        this.promises().then(res => {
-          this.setState({
-            notes: res[1],
-          });
-        });
-        
-    } else {
-        throw new Error("Code " + response.status + " Message: " + response.statusText)
-    }
+        if (response.ok === true) {
+          this.promises()
+        } else {
+          throw new Error("Code " + response.status + " Message: " + response.statusText)
+        }
     })
     .catch(e => alert(e));
   }
 
-  promises() {
-    return Promise.all([this.getFolders(), this.getNotes()]);
+  @action promises() {
+    Promise.all([this.getFolders(), this.getNotes()]).then(res => {
+      this.folders = res[0];
+      this.notes = res[1];
+      this.done = true;
+    });
   }
-
-  render() {
-    return(
-    <div className="primary-container">
-      
-      <Header 
-        pageTitle="Welcome to Noteful"
-      />
-      <Provider {...store}>
-        <ErrorBound>
-            <Sidebar />
-        </ErrorBound>
-        <ErrorBound>
-            <Main/>
-        </ErrorBound>
-      </Provider>
-    
-    </div>
-    );
-  };
-};
-
-export default App;
+}
+export default new DomainStore();
