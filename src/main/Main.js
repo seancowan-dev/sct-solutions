@@ -14,14 +14,15 @@ import { observer, inject } from 'mobx-react';
 
 class Main extends Component {
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.valueStore.done = false;
+        
     }
 
     componentDidMount() {
         this.props.valueStore.promises();
     }
-
+    
     render() {
         return (
             
@@ -30,12 +31,12 @@ class Main extends Component {
                 <Route path="/" component={Notes} exact />
                 <Route path='/note/:noteId' render={(props) => {  
                     if (this.props.valueStore.done === true) {
-                        return displayNote(props, this.props.valueStore.notes);
+                        return displayNote(props, this.props.valueStore.notes.slice());
                     }        
                 }} />
                 <Route path='/folder/:folderId' render={(props) => {
                     if (this.props.valueStore.done === true) {
-                        return displayFolder(props, this.props.valueStore.notes);
+                        return displayFolder(props, this.props.valueStore.notes.slice(), this.props.valueStore.folderNotes.slice(), this.props.valueStore.folderIsUpdating);
                     }
                 }} />
                 <Route path='/addNote' render={(props) => {
@@ -55,11 +56,8 @@ class Main extends Component {
                 <Route path='/updateFolder' exact render={(props) => {
                     return <Update localProps={props} updateType="folder"/>
                 }}/>
-                <Route path='/updated/:folderName/:folderId' render={(props) => {
-                    return <Update localProps={props} updateType="folder"/>
-                }}/>
                 <Route path='/updateNote/:noteid' render={(props) => {
-                    return <Update localProps={props} updateType="note" />
+                    return <Update localProps={props} updateType="note" newStore={this.props.valueStore}/>
                 }}/>                   
             </Switch>
             </main>

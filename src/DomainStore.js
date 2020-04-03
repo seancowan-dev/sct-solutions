@@ -1,4 +1,4 @@
-import {observable,action,toJS} from 'mobx';
+import {observable,action} from 'mobx';
 import uuid from "uuid";
 
 class DomainStore{
@@ -12,6 +12,9 @@ class DomainStore{
      @observable errorMsg = "";
      @observable notes = {};
      @observable folders = {};
+     @observable noteContent = null;
+     @observable noteTitle = null;
+     @observable folderIsUpdating = null;
 
     // Update Component
      @observable folderNotes = [];

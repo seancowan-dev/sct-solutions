@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-import SiteContext from '../main/Context';
 import Folder from './Folder/Folder';
 import Button from '../comps/Button/Button';
 import './Sidebar.css';
@@ -15,13 +13,17 @@ class Sidebar extends Component {
         let folders;
         if (this.props.valueStore.done === true) {
             folders = this.props.valueStore.folders.map((folder) => {
-                return <NavLink key={folder.folder_id} to={"/folder/" + folder.folder_id}>
+                return <a key={Math.random()} onClick={(e) => {
+                    e.preventDefault()
+                    this.props.valueStore.folderIsUpdating = null;
+                    this.props.history.push(`/folder/${folder.folder_id}`)
+                }}>
                     <Folder
-                    name={folder.name}
-                    id={folder.folder_id}
-                    key={Math.random(5)}
-                />
-                </NavLink>
+                        name={folder.name}
+                        id={folder.folder_id}
+                        key={Math.random(5)}
+                    />
+                </a>
             });
         }
         

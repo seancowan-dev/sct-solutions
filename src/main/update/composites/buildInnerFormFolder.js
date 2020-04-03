@@ -27,6 +27,7 @@ function buildInnerFormFolder(valueStore, history) {
                     if (note.folderid === e._targetInst.stateNode.id) {
                         return note;
                     }
+                    return null;
                 })
                     valueStore.selectedFolderId = e._targetInst.stateNode.id;
                     valueStore.selectedFolderIdOld = e._targetInst.stateNode.id;
@@ -59,6 +60,10 @@ function buildInnerFormFolder(valueStore, history) {
                 readOnly: true,
             }}
             value={valueStore.selectedFolderId}
+            onChange={(e) => {
+                valueStore.selectedFolderIdOld = valueStore.selectedFolderId;
+                valueStore.selectedFolderId = e.target.value;
+            }}
         />
     </FormControl>
     <FormControl className="migrate-notes-checkbox-form-control">
@@ -98,28 +103,43 @@ function buildInnerFormFolder(valueStore, history) {
                             if (note.folderid === valueStore.selectedFolderIdOld) {
                                 return note;
                             }
-                        })
-                        folderNotes.forEach((note) => {
+                            return null;
+                        });
+                        folderNotes.forEach((note, idx) => {
                             let update = {folderid: valueStore.selectedFolderId}
                             valueStore.updateNote(note.id, update)
+
                         });
+                        let newNotes = folderNotes.map((note) => {
+                            let newNote = {
+                                id: note.id,
+                                name: note.name,
+                                modified: note.modified,
+                                folderId: updatedInfo.folder_id,
+                                content: note.content
+                            }
+                            return newNote;
+                        })
+                        valueStore.folderNotes = newNotes;
+                        valueStore.folderIsUpdating = true;
                     }
                     if(valueStore.migrateChecked === false) {
                         folderNotes = valueStore.notes.filter(note => {
                             if (note.folderid === valueStore.selectedFolderIdOld) {
                                 return note;
                             }
+                            return null;
                         })
                         folderNotes.forEach((note) => {
                             valueStore.deleteNote(note.id)
                         });
+                        valueStore.folderNotes = [];
                     }
                     valueStore.updateFolder(valueStore.selectedFolderIdOld, updatedInfo);
                     valueStore.selectedFolderIdOld = updatedInfo.folder_id;
                     valueStore.selectedFolder = "";
                     valueStore.selectedFolderId = "";
-                    valueStore.folderNotes = [];
-                    history.push(`/updateFolder/`);
+                    history.push(`/folder/${updatedInfo.folder_id}`);
                 }}
             >Update Folder</Button>
             <FormHelperText>Commit Changes to Database</FormHelperText>
