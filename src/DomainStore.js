@@ -52,7 +52,7 @@ class DomainStore{
   // Fetch API Methods
 
   @action async getFolders() {
-    return await fetch(`http://localhost:8000/api/folders`, {
+    return await fetch(`https://my-noteful-app-api.herokuapp.com/api/folders`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
@@ -64,7 +64,7 @@ class DomainStore{
   }
 
   @action async getNotes() {
-    return await fetch(`http://localhost:8000/api/notes`, {
+    return await fetch(`https://my-noteful-app-api.herokuapp.com/api/notes`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
@@ -76,7 +76,7 @@ class DomainStore{
   }
 
   @action async deleteNote(id) {
-    return await fetch(`http://localhost:8000/api/notes/${id}`, {
+    return await fetch(`https://my-noteful-app-api.herokuapp.com/api/notes/${id}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'
@@ -116,7 +116,7 @@ class DomainStore{
       }
       return null
     });
-    await fetch(`http://localhost:8000/api/notes/`, {
+    await fetch(`https://my-noteful-app-api.herokuapp.com/api/notes/`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -147,7 +147,7 @@ class DomainStore{
       return null
     });
 
-    await fetch(`http://localhost:8000/api/folders/`, {
+    await fetch(`https://my-noteful-app-api.herokuapp.com/api/folders/`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -164,7 +164,7 @@ class DomainStore{
   }
 
   @action async deleteFolder(id) {
-    await fetch(`http://localhost:8000/api/folders/${id}`, {
+    await fetch(`https://my-noteful-app-api.herokuapp.com/api/folders/${id}`, {
       method: `DELETE`,
       headers: {
         'content-type': 'application/json'
@@ -182,7 +182,7 @@ class DomainStore{
   }
 
   @action async updateFolder(id, updates) {
-    await fetch(`http://localhost:8000/api/folders/${id}`, {
+    await fetch(`https://my-noteful-app-api.herokuapp.com/api/folders/${id}`, {
       method: `PATCH`,
       headers: {
         'content-type': 'application/json'
@@ -200,7 +200,7 @@ class DomainStore{
   }
 
   @action async updateNote(id, updates) {
-    await fetch(`http://localhost:8000/api/notes/${id}`, {
+    await fetch(`https://my-noteful-app-api.herokuapp.com/api/notes/${id}`, {
       method: `PATCH`,
       headers: {
         'content-type': 'application/json'
