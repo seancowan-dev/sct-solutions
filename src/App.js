@@ -3,9 +3,6 @@ import { observable } from 'mobx';
 import { Provider } from "mobx-react";
 import ErrorBound from './comps/ErrorBound';
 import DomainStore from './DomainStore'
-import Header from './header/Header';
-import Sidebar from './sidebar/Sidebar';
-import Main from './main/Main';
 import './App.css';
 
 const store = {
@@ -18,16 +15,9 @@ class App extends Component {
   render() {
     return(
     <div className="primary-container">
-      
-      <Header 
-        pageTitle="Welcome to Noteful"
-      />
       <Provider {...store}>
         <ErrorBound>
-            <Sidebar />
-        </ErrorBound>
-        <ErrorBound>
-            <Main/>
+          {<div>put something here </div>}
         </ErrorBound>
       </Provider>
     

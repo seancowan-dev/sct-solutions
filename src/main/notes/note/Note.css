@@ -1,9 +1,0 @@
-@import url('../../../css/base-theme/vars.css');
-
-.note-info {
-    border: var(--border-style-medium);
-    margin-top: 15px;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 10px;
-}
