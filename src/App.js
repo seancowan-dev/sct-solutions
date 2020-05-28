@@ -5,25 +5,20 @@ import ErrorBound from './comps/ErrorBound';
 import DomainStore from './DomainStore'
 import './App.css';
 
-const store = {
-  valueStore: DomainStore,
-}
+// const store = {
+//   storeLocal: DomainStore.storeScoped,
+// }
 
-class App extends Component {
-  @observable
 
-  render() {
-    return(
-    <div className="primary-container">
-      <Provider {...store}>
-        <ErrorBound>
-          {<div>put something here </div>}
-        </ErrorBound>
-      </Provider>
-    
-    </div>
+const App = (props) => {
+  
+  return(
+    // <Provider {...store}>
+      <ErrorBound>
+        {props.routes}
+      </ErrorBound>
+    // </Provider>
     );
-  };
 };
 
 export default App;
