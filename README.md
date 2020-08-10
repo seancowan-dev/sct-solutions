@@ -1,68 +1,149 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# About this Boilerplate
 
-## Available Scripts
+This boilerplate was created to ensure a stable and working implementation of React + MobX is always available for my use.  I maintain this boilerplate to ensure the most seamless and integration of MobX into the React Hooks API.  By utilizing these in combination I am able to produce fast, reliable and simple state management for my React sites.  Feel free to use this boilerplate if you like.
 
-In the project directory, you can run:
+In particular the boilerplate has been configured to enable ES6 decorators so as to use the MobX syntax convetions as shown in its documentation.  And also so that a coding style consistent with the React Hooks API is used for state management as well.
 
-### `npm start`
+## Why MobX?
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I prefer MobX over Flux or Redux for a variety of reasons; but the primary reaason is that for a large number of general purpose websites, Flux and Redux are simply too verbose.  They provide unncessarily fine-grained control for simple state updates.  Granted these libraries have their place, but I think they are overly complex for doing something simple such as implementing controlled form components in React.  As such I created this implementation of MobX to streamline state management for the cases in which a more complex solution isn't required.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### How does it work?
 
-### `npm test`
+While I encourage you to read the [full documentation](https://mobx.js.org/README.html) for MobX for truly understanding the full depth of the software, I provide here a brief explanation of how I have implemented MobX.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+My use of MobX revolves primarily around the [provider/inject API](https://mobx.js.org/refguide/inject.html).  As such handling state is very simple.
 
-### `npm run build`
+1. First declare your state variable, setter, and getter in some file like shown below.  I like to use the convetion `<filename>.store.js`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+//sample.store.js//
+import React from 'react';
+import { observable, action, computed, set } from 'mobx';
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+class SampleStore { // Be sure to create a class for the MobX store!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  // Declare the state variable
+  @observable myNewStateVariable = "";  // You could set a default value if desired
 
-### `npm run eject`
+  // Configure the getter
+  @computed get getMyNewStateVariable() {
+    return this.myNewStateVariable;
+  }
+  
+  // Configure a setter action 
+  // There are several ways to set a state variable with MobX, but this is how I like to do it
+  @action setMyNewStateVariable = (newState) => {
+    this.myNewStateVariable = newState;
+  }
+  
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export default new SampleStore(); // Be sure to export as a new instace of the class
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Next in the root source folder of your React app create a file called `DomainStore.js` this will be the primary store file to wire up to the React
+```
+// Be sure to import each store file you have created
+import SampleStore from './stores/sample.store';
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+class DomainStore{
+  // Import external stores
+  constructor() {
+    this.sampleStore = SampleStore; // Note the change from Title Case to Camel Case
+  }
+}
+export default new DomainStore(); // Be sure to export as a new instace of the class
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+3. Inside the top level file of your React App (typically `App.js`) import the DomainStore and instantiate it.
+```
+import React from 'react';
+import DomainStore from './DomainStore'
 
-## Learn More
+const store = {
+  sampleStore: DomainStore.sampleStore,
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const App = (props) => {
+  
+  return(
+        // Hook in your routes here, in this example the route is passed in from a higher-level component by hookrouter
+        // But you could just as easily include routes from some other route handler as well here
+        {props.routes}
+    );
+};
 
-### Code Splitting
+export default App;
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+4.  Next wrap your routed components with the MobX provider to ensure that all components within a route of your domain have access to the store
+```
+import React from 'react';
+import DomainStore from './DomainStore'
+import { Provider } from "mobx-react"; // Import the provider
 
-### Analyzing the Bundle Size
+const store = {
+  sampleStore: DomainStore.sampleStore,
+}
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+const App = (props) => {
+  
+  return(
+    <Provider {...store}> // Wrap your routed components in the Provider HOC and then destruct the store constant into it
+          {props.routes}
+    </Provider>
+    );
+};
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+export default App;
+```
 
-### Advanced Configuration
+5.  That's it you're set up to use MobX now, simply inject whichever store you need into a React Functional component like so
+```
+import React from 'react';
+import { inject, observer } from 'mobx-react';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+// Inject each store you need to acess, and only those you need to access
+// Using the Camel Cased name set earlier in the Domain Store
+const Test = inject('sampleStore')(observer((props) => {
+  return (
+      <div>
+        My First MobX Page
+      </div>
+  );
+  
+}));
 
-### Deployment
+export default Test;
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+6.  Now it is very simple to create controlled form inputs with state management
+```
+import React from 'react';
+import { inject, observer } from 'mobx-react';
 
-### `npm run build` fails to minify
+const Test = inject('sampleStore')(observer((props) => {
+  return (
+      <div>
+        // Access the setter and getter for your state variable via props.camelCasedStoreName
+        <input 
+          className="mobx-test-input" 
+          type="text" 
+          value={props.sessionStore.getMyNewStateVariable}
+          onChange={(e) => {
+            props.sessionStore.setMyNewStateVariable(e.target.value); // Set the variable when the input changes
+          }}
+        />
+      </div>
+  );
+  
+}));
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+export default Test;
+```
+
+This is by no means an exhaustive explanation of the different ways in which MobX can help you manage state, but this is the simplest and to the point example of how you can create controlled form inputs quite easily with minimal boilerplate.
+
