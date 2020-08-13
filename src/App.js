@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
-import { observable } from 'mobx';
+import React from 'react';
 import { Provider } from "mobx-react";
 import ErrorBound from './comps/ErrorBound';
 import DomainStore from './DomainStore'
-import './App.css';
 
-// const store = {
-//   storeLocal: DomainStore.storeScoped,
-// }
+const store = {
+  uiStore: DomainStore.uiStore,
+  formStore: DomainStore.formStore,
+}
 
 
 const App = (props) => {
   
   return(
-    // <Provider {...store}>
+    <Provider {...store}>
       <ErrorBound>
         {props.routes}
       </ErrorBound>
-    // </Provider>
+    </Provider>
     );
 };
 

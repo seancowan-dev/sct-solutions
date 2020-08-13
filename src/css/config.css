@@ -1,0 +1,21 @@
+/* Primary CSS Configuration file */
+
+/* Dependencies */
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+
+/* Resets */
+@import url('https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap-reboot.css');
+
+/* Views */
+@import url('views/_config.css');
+@import url('views/_vars.css');
+
+/* Components */
+@import url('components/_config.css');
+@import url('components/_vars.css');
+
+/* Themes */
+@import url('themes/_config.css');
+@import url('themes/_vars.css');
+
+

@@ -1,12 +1,13 @@
-import {observable,action} from 'mobx';
-import uuid from "uuid";
+import UIStore from '../src/stores/ui.store';
+import FormStore from '../src/stores/form.store'
 
 class DomainStore{
   // Import external stores
-  // constructor() {
+  constructor() {
 
-    //this.storeScoped = StoreLocale;
+    this.uiStore = UIStore;
+    this.formStore = FormStore;
 
-  // }
+  }
 }
 export default new DomainStore();

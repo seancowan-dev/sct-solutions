@@ -2,7 +2,7 @@ import React from 'react';
 import { useRoutes } from 'hookrouter';
 import Routes from './routing/Routing';
 import { BrowserRouter } from 'react-router-dom';
-import './index.css';
+import '../src/css/config.css';
 import App from './App';
 
 const Site = (props) => {

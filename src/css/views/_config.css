@@ -1,0 +1,4 @@
+.main-container {
+    width: var(--main-container-width);
+    height: var(--main-container-height);
+  }

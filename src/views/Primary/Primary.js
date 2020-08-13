@@ -4,7 +4,9 @@ import uuid from 'uuid';
 
 const Primary = observer((props) => {
     return (
-        <div>Testy</div>
+        <div className="main-container">
+
+        </div>
     );    
 });
 
