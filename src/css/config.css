@@ -11,8 +11,8 @@
 @import url('views/_vars.css');
 
 /* Components */
-@import url('components/_config.css');
-@import url('components/_vars.css');
+@import url('models/_config.css');
+@import url('models/_vars.css');
 
 /* Themes */
 @import url('themes/_config.css');

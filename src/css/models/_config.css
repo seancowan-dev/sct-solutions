@@ -1,0 +1,6 @@
+/* Navigation */
+
+/* Mobile */
+.nav-logo {
+    max-width: var(--nav-logo-max-width);
+}

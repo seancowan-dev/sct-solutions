@@ -1,3 +1,9 @@
+/* Globals */
 body {
     background-color: var(--body-bg-color);
 }
+
+.site-nav {
+    background: var(--nav-background);
+}
+

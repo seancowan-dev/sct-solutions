@@ -1,5 +1,8 @@
 /* Variables for Themes */
 :root {
-    /* Body */
+    /* Globals */
     --body-bg-color: rgb(255, 255, 255);
+
+    /* Nav */
+    --nav-background: rgb(168, 173, 173);
 }
