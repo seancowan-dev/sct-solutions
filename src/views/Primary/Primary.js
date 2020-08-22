@@ -1,11 +1,14 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Nav from '../../_models/nav.model';
+import Header from '../../models/Header.model';
+import Login from '../../models/Login.model';
 
 const Primary = observer((props) => {
+
     return (
         <div className="main-container">
-            <Nav />
+            <Login />
+            <Header />
         </div>
     );    
 });

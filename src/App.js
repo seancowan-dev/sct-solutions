@@ -6,6 +6,7 @@ import DomainStore from './DomainStore'
 const store = {
   uiStore: DomainStore.uiStore,
   formStore: DomainStore.formStore,
+  componentStore: DomainStore.componentStore
 }
 
 

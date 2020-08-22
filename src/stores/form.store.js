@@ -7,16 +7,30 @@ import { observable, action, computed, set } from 'mobx';
 class FormStore { 
 
   // Variable Declaration
-  @observable myNewStateVariable = "";
+  // Login
 
-    // Getters
-  @computed get getMyNewStateVariable() {
-    return this.myNewStateVariable;
+  @observable loginFields = {
+    email: "",
+    password: ""
   }
-    // Setters
-  @action setMyNewStateVariable = (newState) => {
-    this.myNewStateVariable = newState;
+
+  // Setters
+  @action setLoginEmail = (input) => {
+    this.loginFields.email = input;
   }
+
+  @action setLoginPassword = (input) => {
+    this.loginFields.password = input;
+  }
+
+  // Getters
+  @computed get getLoginEmail() {
+    return this.loginFields.email;
+  }
+
+  @computed get getLoginPassword() {
+    return this.loginFields.password;
+}
   
 }
 

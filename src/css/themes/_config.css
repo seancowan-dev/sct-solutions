@@ -3,7 +3,12 @@ body {
     background-color: var(--body-bg-color);
 }
 
+/* Navigation */
 .site-nav {
     background: var(--nav-background);
 }
+
+/* When the user hovers a link */
+
+  
 
