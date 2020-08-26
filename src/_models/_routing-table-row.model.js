@@ -5,7 +5,7 @@ import uuid from 'uuid';
 const RoutingTableRow = observer((props) => {
     return (   
         <tr>
-            <th scope="row">{props.index}</th>
+            <th scope="row">{props.name}</th>
             <td>{props.route_path}</td>
             <td>{props.route_view}</td>
             <td>action here</td>

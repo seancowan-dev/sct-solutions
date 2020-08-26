@@ -12,16 +12,6 @@ const LOCAL_URI = config.CLIENT_URI;
 class UIStore { 
 
   // // Variable Declaration
-  // @observable myNewStateVariable = "";
-
-  //   // Getters
-  // @computed get getMyNewStateVariable() {
-  //   return this.myNewStateVariable;
-  // }
-  //   // Setters
-  // @action setMyNewStateVariable = (newState) => {
-  //   this.myNewStateVariable = newState;
-  // }
 
   // Paths
   // Hard coded paths for the UI
