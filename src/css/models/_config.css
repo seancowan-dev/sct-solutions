@@ -30,3 +30,83 @@
 .jumbo-admin {
     margin-bottom: 0px;
 }
+
+    /* File Uploader */
+    .files input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+    .files label {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding-top: 35%;
+        padding-bottom: 35%;
+        text-align: center !important;
+        margin-top: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%!important;
+    }
+    .inner-label{
+        width: 50%;
+        height: 50px;
+        font-size: 1em;
+        font-weight: 700;
+        color: white;
+        background-color: #05c565;
+        display: inline-block;
+        -webkit-box-shadow: 0px 0px 4px 0px rgba(56,56,56,1);
+        -moz-box-shadow: 0px 0px 4px 0px rgba(56,56,56,1);
+        box-shadow: 0px 0px 4px 0px rgba(56,56,56,1);
+        border-radius: 6px;
+        border: 2px solid #01a72a;
+    }
+    .inner-label > p {
+        padding-top: 12px;
+    }
+    .inner-label:focus, .inner-label:hover {
+        background-color: #52b985;
+    }
+    .files input:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
+     }
+    .files{ 
+        position: relative; 
+    }
+    .files:after {  pointer-events: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 50px;
+        right: 0;
+        height: 56px;
+        content: "";
+        background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+        display: block;
+        margin: 0 auto;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+    .color input{ background-color:#f1f1f1;}
+    .files:before {
+        position: absolute;
+        bottom: 10px;
+        left: 0;  pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 57px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }

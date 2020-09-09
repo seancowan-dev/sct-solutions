@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
+import { Progress } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '../../models/Header.model';
 import Login from '../../models/Login.model';
 import RoutingTable from '../../_models/routing-table.model';
 
+toast.configure();
+
 const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((props) => {
+    // Variable declarations
     let componentList;
 
+    // Local Functions
+
+        // Toasts
+        const notify_success = () => toast("Success! File Upload Complete");
+        const notify_fail = () => toast("Uh oh! Something went wrong");
+
+    // Hooks
+
+
+
+    // Conditional Renders or Operations
+
+    // Routing
     if (props.routingStore.getCurrentRoutes.length > 0) {
         componentList = props.componentStore.createSelectEntries();
+    }
+
+    // JSX File Uploader
+    if (props.componentStore.getLoadedStatus === 100) { // If status is 100 then operation must be complete
+        notify_success(); // Set a toast for the client
+        setTimeout(() => { // Wait a short time then reset the upload progress bar
+            props.componentStore.setLoadedStatus(0);
+        }, 2000);
     }
 
     return (
@@ -34,9 +61,15 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
                     <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div className="container card-body">
                         <h2>Routing</h2>
-                        <form>
+                        <h1>*note to self*  put all these instructions in tooltips</h1>
+                        <br />
+                        <p>Configure static routes for the site, you can select installed components and enter the route you want them to be accessible at.  It is important to note that these are not for nav-bars that actually appear on the site, as not all pages will always appear on the nav bar.  If you wanted to create a nav bar click *here*.</p>
+                        <h5>Manage Currently Configured Routes</h5>
+                        <p>Click the dropdown menu under Actions to see a list of actions available for each route.</p>
+                        <RoutingTable/>
+                        <form method="post" action="#" id="#">
                             <h5>Add New Route To Component</h5>
-                            <p>Here you can add, delete or modify routes to pre-installed model components.  Need a component not listed? *put guide on how to install or build more here*</p>
+                            <p>Choose a name for your route, this is required, and will not be shown to the user.  This is a name for you to know what route it is. Enter the path you wish the component to be accessible at and then select the component from the drop down list.  Don't see what you need in the pre-installed componentes?  (Click here) to see the instructions on how to upload your own components.  In general you can usually copy and paste your JSX code directly, but there are some caveats.</p>
                             <div className="form-group">
                                 <div className="row">
                                     <div className="col">
@@ -62,8 +95,23 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <RoutingTable/>
+                            <h5>Upload New Component</h5>
+                            <p>To add a new component you can upload it here, you must upload .jsx files in the format described *insert link here*</p>
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-6">
+                                    <div className="form-group files">
+                                        <input type="file" name="file" id="file" className="form-control" multiple="" onChange={(e) => {
+                                            props.componentStore.setFileData(e.target.files[0]);
+                                        }}/>
+                                        <label for="file"><div className="inner-label"><p>Choose a file</p></div></label>
+                                        <Progress max="100" color="success" value={props.componentStore.getLoadedStatus} >Progress: {Math.round(props.componentStore.getLoadedStatus, 2) }%</Progress>
+                                    </div>
+                                    <button type="button" class="btn btn-success btn-block" onClick={(e) => {
+                                        props.componentStore.handleJSXFileUpload();
+                                    }}>Upload</button> 
+                                </div>
+                            </div>
+                        </form>  
                     </div>
                     </div>
                 </div>
