@@ -19,10 +19,10 @@ const App = (props) => {
   let routes = {};
   store.routingStore.getCurrentRoutes.forEach(element => {
       const blob_data = store.componentStore.getComponentBlobDataByName(element.component_name + '.js');
-      console.log(blob_data);
-      const Component = lazy(() => import(`data:text/javascript;charset=utf-8;base64,${blob_data}`).then(module => {
-        console.dir(module);
-      }));
+
+      const DynamicComponent = lazy(() => import(window.localStorage.getItem(element.component_name)));
+      console.log(<DynamicComponent />);
+      const LocalComponent = lazy(() => import(`../src/views/${element.component_name}/${element.component_name}`));
       // if (compData !== undefined) {
       //   let file = new File(compData, element.component_name + '.js', {
       //     type: 'text/javascript',
@@ -40,8 +40,7 @@ const App = (props) => {
       // const Component = lazy(() => import(componentText));
       // console.log(<Component key={uuid.v4()} />);
       // console.log(currentComp);
-      routes[element.route_path] = () => <Suspense fallback={<div>Loading...</div>}><Component /></Suspense>;
-      // console.log(routes);
+      routes[element.route_path] = () => <Suspense fallback={<div>Loading...</div>}><DynamicComponent /></Suspense>;
   });
 
   const routeResult = useRoutes(routes);

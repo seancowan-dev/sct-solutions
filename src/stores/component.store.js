@@ -164,7 +164,6 @@ class ComponentStore {
         if (e.target.readyState === FileReader.DONE) {
           let buffer = e.target.result
           let array = new Uint8Array(buffer);
-          console.log(array);
           
           for (let i = 0; i < array.length; i++) {
             bytesArr.push(array[i]);

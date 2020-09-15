@@ -30,13 +30,14 @@ const Site = (props) => {
               byteStr += compData[i];
             }
             
-            let b64 = btoa(byteStr);
-            let someotherblob = new Blob([jsx], {type:"text/javascript"});
-            console.log(someotherblob);
-            let path = window.URL.createObjectURL(someotherblob);
-            console.log(path);
+            // let b64 = btoa(byteStr);
+            // let someotherblob = new Blob([jsx], {type:"text/javascript"});
+            // console.log(someotherblob);
+            // let path = window.URL.createObjectURL(someotherblob);
+            // console.log(path);
 
-            componentStore.setComponentBlobData(element.component_name + '.js', b64); // Set the blob path in the store
+            window.localStorage.setItem(`${element.component_name}`, jsx);
+            componentStore.setComponentBlobData(element.component_name + '.js', jsx); // Set the blob path in the store
 
             if (index === (currentRoutes.length - 1)) { // If this is the end of the array
                 setLoaded(true); // Loading done
