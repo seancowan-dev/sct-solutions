@@ -1,30 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Progress } from 'reactstrap';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Header from '../../models/Header.model';
 import Login from '../../models/Login.model';
 import RoutingTable from '../../_models/routing-table.model';
+import NewRouteForm from '../../_models/_admin.new-route-form.model';
+import { Tooltip } from 'reactstrap';
+import HelpTwoToneIcon from '@material-ui/icons/HelpTwoTone';
 
-toast.configure();
-
-const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((props) => {
+const Admin = observer((props) => {
     // Variable declarations
-    let componentList;
 
     // Local Functions
-
+    const toggleRoutingTooltip = () => setRoutingTooltipOpen(!RoutingTooltipOpen);
 
     // Hooks
-
+    const [RoutingTooltipOpen, setRoutingTooltipOpen] = useState(false);
 
     // Conditional Renders or Operations
 
-        // Routing
-        if (props.routingStore.getCurrentRoutes.length > 0) {
-            componentList = props.componentStore.createSelectEntries();
-        }
+    // Routing
 
     return (
         <div className="main-container">
@@ -48,42 +42,18 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
 
                     <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div className="container card-body">
-                        <h2>Routing</h2>
-                        <h1>*note to self*  put all these instructions in tooltips</h1>
-                        <br />
-                        <p>Configure static routes for the site, you can select installed components and enter the route you want them to be accessible at.  It is important to note that these are not for nav-bars that actually appear on the site, as not all pages will always appear on the nav bar.  If you wanted to create a nav bar click *here*.</p>
-                        <h5>Manage Currently Configured Routes</h5>
-                        <p>Click the dropdown menu under Actions to see a list of actions available for each route.</p>
+                        <h2>Routing <HelpTwoToneIcon id="routing-tooltip" /></h2>
+                        <Tooltip 
+                            placement="right"
+                            autohide={false} 
+                            isOpen={RoutingTooltipOpen} 
+                            target="routing-tooltip"                     
+                            toggle={toggleRoutingTooltip}
+                        >
+                            <p>Configure static routes for the site, you can select installed components and enter the route you want them to be accessible at.  It is important to note that these are not for nav-bars that actually appear on the site, as not all pages will always appear on the nav bar.  If you wanted to create a nav bar click *here*.</p>
+                        </Tooltip>
                         <RoutingTable/>
-                        <form method="post" action="#" id="#">
-                            <h5>Add New Route To Component</h5>
-                            <p>Choose a name for your route, this is required, and will not be shown to the user.  This is a name for you to know what route it is. Enter the path you wish the component to be accessible at and then select the component from the drop down list.  Don't see what you need in the pre-installed componentes?  (Click here) to see the instructions on how to upload your own components.  In general you can usually copy and paste your JSX code directly, but there are some caveats.</p>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col">
-                                        <label htmlFor="new-route-name">Route Name</label>
-                                        <input type="text" className="form-control" id="new-route-name" aria-describedby="name-help" value={props.adminStore.getRouteName} onChange={(e) => {props.adminStore.setRouteName(e.target.value)}}/>
-                                        <small id="name-help" className="form-text text-muted">{`Enter a name for your route.`}</small>
-                                    </div>
-                                    <div className="col">
-                                    <label htmlFor="new-route-path">Component</label>
-                                    <select className="form-control" id="new-route-component-select" aria-describedby="component-help" onChange={(e) => {
-                                        console.log(e.target.value);
-                                    }}>
-                                        {componentList}
-                                    </select>
-                                    <small id="component-help" className="form-text text-muted">{`Choose a component to route to.`}</small>
-                                    </div>                              
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <label htmlFor="new-route-path">Route Path</label>
-                                        <input type="text" className="form-control" id="new-route-path" aria-describedby="path-help" value={props.adminStore.getRoutePath} onChange={(e) => {props.adminStore.setRoutePath(e.target.value)}}/>
-                                        <small id="path-help" className="form-text text-muted">{`Define the path for your route.`}</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>  
+                        <NewRouteForm/>
                     </div>
                     </div>
                 </div>
@@ -91,6 +61,6 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
             </div>
         </div>
     );    
-}));
+});
 
 export default Admin;

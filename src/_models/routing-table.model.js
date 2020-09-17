@@ -8,19 +8,23 @@ const RoutingTable = inject('routingStore')(observer((props) => {
         return <RoutingTableRow key={uuid.v4()} name={route.name} route_path={route.route_path} route_view={route.component_name} />
     })
     return (
-        <table className="table">
-            <thead className="thead-light">
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Path</th>
-                    <th scope="col">to View</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+        <>
+            <h5>Manage Currently Configured Routes</h5>
+            <p>Click the dropdown menu under Actions to see a list of actions available for each route.</p>
+            <table className="table">
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Path</th>
+                        <th scope="col">to View</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        </>
     );    
 }));
 
