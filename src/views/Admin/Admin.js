@@ -15,28 +15,16 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
 
     // Local Functions
 
-        // Toasts
-        const notify_success = () => toast("Success! File Upload Complete");
-        const notify_fail = () => toast("Uh oh! Something went wrong");
 
     // Hooks
 
 
-
     // Conditional Renders or Operations
 
-    // Routing
-    if (props.routingStore.getCurrentRoutes.length > 0) {
-        componentList = props.componentStore.createSelectEntries();
-    }
-
-    // JSX File Uploader
-    if (props.componentStore.getLoadedStatus === 100) { // If status is 100 then operation must be complete
-        notify_success(); // Set a toast for the client
-        setTimeout(() => { // Wait a short time then reset the upload progress bar
-            props.componentStore.setLoadedStatus(0);
-        }, 2000);
-    }
+        // Routing
+        if (props.routingStore.getCurrentRoutes.length > 0) {
+            componentList = props.componentStore.createSelectEntries();
+        }
 
     return (
         <div className="main-container">
@@ -93,22 +81,6 @@ const Admin = inject('adminStore', 'componentStore', 'routingStore')(observer((p
                                         <input type="text" className="form-control" id="new-route-path" aria-describedby="path-help" value={props.adminStore.getRoutePath} onChange={(e) => {props.adminStore.setRoutePath(e.target.value)}}/>
                                         <small id="path-help" className="form-text text-muted">{`Define the path for your route.`}</small>
                                     </div>
-                                </div>
-                            </div>
-                            <h5>Upload New Component</h5>
-                            <p>To add a new component you can upload it here, you must upload .jsx files in the format described *insert link here*</p>
-                            <div class="row justify-content-md-center">
-                                <div class="col-md-6">
-                                    <div className="form-group files">
-                                        <input type="file" name="file" id="file" className="form-control" multiple="" onChange={(e) => {
-                                            props.componentStore.setFileData(e.target.files[0]);
-                                        }}/>
-                                        <label for="file"><div className="inner-label"><p>Choose a file</p></div></label>
-                                        <Progress max="100" color="success" value={props.componentStore.getLoadedStatus} >Progress: {Math.round(props.componentStore.getLoadedStatus, 2) }%</Progress>
-                                    </div>
-                                    <button type="button" class="btn btn-success btn-block" onClick={(e) => {
-                                        props.componentStore.handleJSXFileUpload();
-                                    }}>Upload</button> 
                                 </div>
                             </div>
                         </form>  
