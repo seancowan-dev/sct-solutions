@@ -170,13 +170,6 @@ class ComponentStore {
           }
           
           let json = ComponentSerializer._serialize_JSX_upload(this.fileData.file.name, bytesArr);
-          // console.log(bytesArr);
-          // let jsx;
-          // for (let i = 0; i < bytesArr.length; i++) {
-          //   jsx += String.fromCharCode(bytesArr[i]);
-          // }
-          // console.log(jsx);
-          // console.log(json);
           ComponentsService.uploadJSXComponentFiles(json, this.fileData.file.name);
         }
       }
